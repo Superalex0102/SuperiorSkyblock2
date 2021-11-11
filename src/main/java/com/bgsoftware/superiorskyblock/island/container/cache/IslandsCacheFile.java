@@ -1,10 +1,12 @@
 package com.bgsoftware.superiorskyblock.island.container.cache;
 
 import com.bgsoftware.superiorskyblock.api.island.Island;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
 public final class IslandsCacheFile {
@@ -14,9 +16,35 @@ public final class IslandsCacheFile {
 
     private final RandomAccessFile randomAccessFile;
 
-    public IslandsCacheFile(File file) throws IOException {
+    public static IslandsCacheFile open(File folder, String pathname) {
+        try {
+            File cacheFile = new File(folder, pathname);
+            boolean newlyCreated = false;
+
+            if (!cacheFile.exists()) {
+                if (!cacheFile.createNewFile())
+                    return null;
+                newlyCreated = true;
+            }
+
+            return new IslandsCacheFile(cacheFile, newlyCreated);
+        } catch (IOException error) {
+            return null;
+        }
+    }
+
+    private IslandsCacheFile(File file, boolean newlyCreated) throws IOException {
         this.randomAccessFile = new RandomAccessFile(file, "rw");
-        checkHeaders();
+        if (newlyCreated) {
+            writeHeaders();
+        } else {
+            checkHeaders();
+        }
+    }
+
+    private void writeHeaders() throws IOException {
+        this.randomAccessFile.seek(0);
+        this.randomAccessFile.write(HEADER_MAGIC.getBytes(StandardCharsets.UTF_8));
     }
 
     private void checkHeaders() throws IOException {
@@ -44,7 +72,7 @@ public final class IslandsCacheFile {
         }
     }
 
-    public boolean saveIsland(Island island) {
+    public boolean saveIsland(@NotNull Island island) {
         try {
             int islandId = island.getSessionId();
             int islandEntryOffset = saveIslandId(islandId);
