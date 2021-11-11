@@ -114,6 +114,7 @@ public final class SIsland implements Island {
      */
     private SuperiorPlayer owner;
     private final UUID uuid;
+    private final int sessionId;
     private final BlockPosition center;
     private final long creationTime;
     private String creationTimeDate;
@@ -192,8 +193,9 @@ public final class SIsland implements Island {
     private UpgradeValue<BigDecimal> bankLimit = new UpgradeValue<>(new BigDecimal(-2), true);
     private final Map<PlayerRole, UpgradeValue<Integer>> roleLimits = new ConcurrentHashMap<>();
 
-    public SIsland(GridHandler grid, DatabaseResult resultSet) {
+    public SIsland(GridHandler grid, DatabaseResult resultSet, int sessionId) {
         this.uuid = UUID.fromString(resultSet.getString("uuid"));
+        this.sessionId = sessionId;
         this.owner = plugin.getPlayers().getSuperiorPlayer(UUID.fromString(resultSet.getString("owner")));
         this.owner.setIsland(this);
         this.owner.setPlayerRole(SPlayerRole.lastRole());
@@ -264,8 +266,9 @@ public final class SIsland implements Island {
     }
 
     @SuppressWarnings("WeakerAccess")
-    public SIsland(SuperiorPlayer superiorPlayer, UUID uuid, Location location, String islandName, String schemName){
+    public SIsland(SuperiorPlayer superiorPlayer, UUID uuid, int sessionId, Location location, String islandName, String schemName){
         this.uuid = uuid;
+        this.sessionId = sessionId;
         this.owner = superiorPlayer;
 
         if(this.owner != null){
@@ -302,6 +305,11 @@ public final class SIsland implements Island {
     @Override
     public UUID getUniqueId() {
         return uuid;
+    }
+
+    @Override
+    public int getSessionId() {
+        return 0;
     }
 
     @Override

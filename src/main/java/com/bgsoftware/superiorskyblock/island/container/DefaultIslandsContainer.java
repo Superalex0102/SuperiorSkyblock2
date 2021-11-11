@@ -28,6 +28,8 @@ public final class DefaultIslandsContainer implements IslandsContainer {
 
     private final SuperiorSkyblockPlugin plugin;
 
+    private int lastSessionId = 0;
+
     public DefaultIslandsContainer(SuperiorSkyblockPlugin plugin){
         this.plugin = plugin;
         SortingType.values().forEach(sortingType -> addSortingType(sortingType, false));
@@ -129,6 +131,11 @@ public final class DefaultIslandsContainer implements IslandsContainer {
     @Override
     public void addSortingType(SortingType sortingType, boolean sort) {
         this.sortedIslands.registerSortingType(sortingType, sort, ISLANDS_PREDICATE);
+    }
+
+    @Override
+    public int nextSessionId() {
+        return ++lastSessionId;
     }
 
     private void runWithCustomWorld(Location islandLocation, Island island, World.Environment environment, Consumer<Location> onSuccess){

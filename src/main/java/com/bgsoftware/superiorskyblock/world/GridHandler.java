@@ -99,7 +99,7 @@ public final class GridHandler extends AbstractHandler implements GridManager {
 
     public void createIsland(DatabaseResult resultSet) {
         UUID owner = UUID.fromString(resultSet.getString("owner"));
-        Island island = plugin.getFactory().createIsland(this, resultSet);
+        Island island = plugin.getFactory().createIsland(this, resultSet, this.islandsContainer.nextSessionId());
         this.islandsContainer.addIsland(island);
     }
 
@@ -157,7 +157,8 @@ public final class GridHandler extends AbstractHandler implements GridManager {
 
         SuperiorSkyblockPlugin.debug("Action: Calculate Next Island, Location: " + LocationUtils.getLocation(islandLocation));
 
-        Island island = plugin.getFactory().createIsland(superiorPlayer, islandUUID, islandLocation.add(0.5, 0, 0.5), islandName, schemName);
+        Island island = plugin.getFactory().createIsland(superiorPlayer, islandUUID, this.islandsContainer.nextSessionId(),
+                islandLocation.add(0.5, 0, 0.5), islandName, schemName);
         EventResult<Boolean> event = EventsCaller.callIslandCreateEvent(superiorPlayer, island, schemName);
 
         if (!event.isCancelled()) {

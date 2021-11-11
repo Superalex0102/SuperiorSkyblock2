@@ -47,6 +47,11 @@ public interface Island extends Comparable<Island>, IMissionsHolder {
     UUID getUniqueId();
 
     /**
+     * Get the ID of the Island of the current session.
+     */
+    int getSessionId();
+
+    /**
      * Get the creation time of the island.
      */
     long getCreationTime();

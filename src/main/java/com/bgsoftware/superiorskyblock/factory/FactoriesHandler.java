@@ -55,13 +55,13 @@ public final class FactoriesHandler implements FactoriesManager {
         this.databaseBridgeFactory = databaseBridgeFactory;
     }
 
-    public Island createIsland(GridHandler grid, DatabaseResult resultSet) {
-        SIsland island = new SIsland(grid, resultSet);
+    public Island createIsland(GridHandler grid, DatabaseResult resultSet, int sessionId) {
+        SIsland island = new SIsland(grid, resultSet, sessionId);
         return islandsFactory == null ? island : islandsFactory.createIsland(island);
     }
 
-    public Island createIsland(SuperiorPlayer superiorPlayer, UUID uuid, Location location, String islandName, String schemName){
-        SIsland island = new SIsland(superiorPlayer, uuid, location, islandName, schemName);
+    public Island createIsland(SuperiorPlayer superiorPlayer, UUID uuid, int sessionId, Location location, String islandName, String schemName){
+        SIsland island = new SIsland(superiorPlayer, uuid, sessionId, location, islandName, schemName);
         return islandsFactory == null ? island : islandsFactory.createIsland(island);
     }
 

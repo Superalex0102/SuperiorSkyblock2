@@ -105,6 +105,11 @@ public final class SpawnIsland implements Island {
     }
 
     @Override
+    public int getSessionId() {
+        return 0;
+    }
+
+    @Override
     public long getCreationTime() {
         return -1;
     }

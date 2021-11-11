@@ -40,4 +40,6 @@ public interface IslandsContainer {
 
     void addSortingType(SortingType sortingType, boolean sort);
 
+    int nextSessionId();
+
 }
