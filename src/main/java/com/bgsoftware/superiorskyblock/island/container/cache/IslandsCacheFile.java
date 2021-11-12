@@ -12,7 +12,7 @@ import java.util.Optional;
 public final class IslandsCacheFile {
 
     private static final int HEADER_SIZE = 4;
-    private static final String HEADER_MAGIC = "\\x02ICF";
+    private static final String HEADER_MAGIC = "\02ICF";
 
     private final RandomAccessFile randomAccessFile;
 
